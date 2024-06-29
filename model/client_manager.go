@@ -14,13 +14,13 @@ func (manager *ClientManager) Start() {
 		select {
 		case conn := <-manager.Register:
 			manager.Clients[conn] = true
-			jsonMessage, _ := json.Marshal(&Message{Content: "/A new socket has connected"})
+			jsonMessage, _ := json.Marshal(&Message{Content: "a new socket has connected"})
 			manager.Send(jsonMessage, conn)
 		case conn := <-manager.Unregister:
 			if _, ok := manager.Clients[conn]; ok {
 				close(conn.Send)
 				delete(manager.Clients, conn)
-				jsonMesage, _ := json.Marshal(&Message{Content: "/A socket has disconnected"})
+				jsonMesage, _ := json.Marshal(&Message{Content: "a socket has disconnected"})
 				manager.Send(jsonMesage, conn)
 			}
 		case message := <-manager.Broadcast:
